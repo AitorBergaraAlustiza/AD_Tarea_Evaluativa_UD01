@@ -1,0 +1,101 @@
+Ficheros de texto
+	File f = new File(path);
+	
+	Leer
+		FileReader fr = new FileReader(f)
+		int i;
+		while((i = fr.read) != -1) // en i tenemos el valor utf-8 hay que hacer un cast a char
+		fr.close();
+	Escribir
+		FileWriter fw = new FileWriter(f)
+		fw.write(c) // escribir un char
+		fw.write(a) // escribir un array de char
+		fw.close();
+	Leer buffer
+		BufferedReader br = new BufferedReader(new FileReader(f));
+		String linea;
+		while((linea = br.readLine()) != null)
+		br.close();
+	Escribir buffer
+		BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+		bw.write(s) // escribir una cadena
+		bw.newLine() // hay que finalizar la línea
+		bw.close();
+	
+	Escribir print
+		PrintWriter pw = new PrintWriter(new FileWriter(f));
+		pw.println(s) // ya no hace falta añadir el salto de línea
+		pw.close();
+
+Ficheros binarios
+	File f = new File(path);
+	
+	Escribir bytes (output -> hacia el fichero)
+		FileOutputStream fos = new FileOutputStream(f, true); // true para que añada
+		fos.write(i)
+		fos.close()
+	Leer bytes (input -> desde el fichero)
+		FileInputStream fis = new FileInputStream(f);
+		int i = fis.read();
+		fis.close();
+	Escribir data
+		DataOutputStream dos = new DataOutputStream(new FileOutputStream(f))
+		dos.writeUTF(s)
+		dos.writeInt(i)
+		dos.close();
+	Leer data
+		DataInputStream dis = new DataInputStream(new FileInputStream(f))
+		dis.readUTF();
+		dis.readInt();
+		dis.close();
+
+Objetos
+	File f = new File(path);
+	
+	Escribir
+		Persona persona = new Persona("Aitor", 52);
+		FileOutputStream fos = new FileOutputStream(f, true);
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(persona);
+		oos.close();
+		fos.close();
+	Leer
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+		try {
+			while(true)
+				Persona persona = (Persona) ois.readObject();
+			}
+		} catch (EOFException e) {}
+
+Aleatorio
+	char   = 2 bytes
+	int    = 4 bytes
+	Double = 8 bytes
+
+	File f = new File(path);
+	
+	Escribir
+		RandomAccessFile raf = new RandomAccessFile(f, "rw");
+		
+		raf.writeInt(d);
+		raf.writeDouble(f);
+		
+		StringBuffer b = new StringBuffer(s);
+		b.setLength(10);
+		raf.writeChars(buffer.toString());
+		
+		raf.close();
+	Leer
+		RandomAccessFile raf = new RandomAccessFile(f, "r");
+		int posicion = 0;
+		
+		while(raf.getFilePointer() != raf.length()) {
+			raf.seek(posicion);
+			
+			d = raf.readInt();
+			c = raf.readChar();
+			f = raf.readDouble();
+			
+			posicion += d.length+c.length+f.length;
+		}
+		raf close();
